@@ -13,6 +13,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  purchasedGames: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
+  wishlist: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  ],
 });
-const users = mongoose.model("users",userSchema)
-module.exports=users
+const users = mongoose.model("users", userSchema);
+module.exports = users;

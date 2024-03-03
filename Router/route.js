@@ -16,4 +16,10 @@ router.delete('/games/delete-games/:gid',multerConfig.single('image'),gameContro
 router.put('/games/edit-games/:id',multerConfig.single('image'),gameController.editGames)
 //4 Get user project API  routes-localhost:4000/projects/all-user-projects
 router.get('/games/:id', multerConfig.single('image'),gameController.getGamesById);
+router.post('/games/add-purchased-games',userController.addPurchasedGame);
+router.get('/get-users/:userId',userController.getUsersById);
+router.post('/wishlist/:gid',userController.addWishlist);
+router.delete('/deletefromwishlist/:gid',userController.deleteFromWishlist);
+router.delete('/deletefromlibrary/:gid',userController.deletePurchasedGame);
+
 module.exports=router

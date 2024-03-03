@@ -11,6 +11,7 @@ exports.addGames = async (req, res) => {
     rating,
     price,
     category,
+    logoImage,
     link,
     homeButton,
   } = req.body;
@@ -29,9 +30,9 @@ exports.addGames = async (req, res) => {
         rating,
         price,
         category,
+        logoImage,
         image,
         link,
-        homeButton,
       });
       await newGame.save(); //save new user to database
       res.status(200).json(newGame);
@@ -45,7 +46,6 @@ exports.getAllGames= async (req, res) => {
   try {
     //get project informationof particular user
     const allGames = await games.find();
-    console.log(allGames);
     res.status(200).json(allGames); //send response to client
   } catch (err) {
     res.status(401).json(err.err.message);
@@ -69,6 +69,7 @@ exports.getGamesById = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 // //get all projects
 // exports.getAllProjects = async (req, res) => {
 //   const searchKey = req.query.search;
@@ -104,6 +105,7 @@ exports.editGames = async (req, res) => {
     rating,
     price,
     category,
+    logoImage,
     image,
     link,
     homeButton,
@@ -121,6 +123,7 @@ exports.editGames = async (req, res) => {
         rating,
         price,
         category,
+        logoImage,
         image:uploadImage,
         link,
         homeButton,
@@ -145,3 +148,32 @@ exports.deleteGames = async (req, res) => {
     res.status(401).json(err);
   }
 };
+// // Import Razorpay
+// const Razorpay = require('razorpay');
+
+// // Initialize Razorpay instance with your API key and secret
+// const razorpay = new Razorpay({
+//   key_id: 'rzp_test_sR5YVeBhQBZz4N',
+//   key_secret: '9kfxBJEsxKDeeHQW9V5TK40T',
+// });
+
+// // Function to create a Razorpay order
+// exports.createOrder = async (req, res) => {
+//   try {
+//     const { amount, currency } = req.body;
+// console.log(amount);
+// console.log(currency);
+//     // Create an order
+//     const order = await razorpay.orders.create({
+//       amount: amount * 100, // Razorpay expects amount in smallest currency unit (e.g., paise for INR)
+//       currency: currency,
+//       payment_capture: 1, // Automatically capture payment after order creation
+//     });
+
+//     // Send the order ID to the client
+//     res.status(200).json({ orderId: order.id });
+//   } catch (error) {
+//     console.error('Error creating Razorpay order:', error);
+//     res.status(500).json({ error: 'Unable to create Razorpay order' });
+//   }
+// };

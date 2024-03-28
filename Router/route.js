@@ -21,5 +21,6 @@ router.get('/get-users/:userId',userController.getUsersById);
 router.post('/wishlist/:gid',userController.addWishlist);
 router.delete('/deletefromwishlist/:gid',userController.deleteFromWishlist);
 router.delete('/deletefromlibrary/:gid',userController.deletePurchasedGame);
+router.put('/update-users/:id',userController.updateUser);
 
 module.exports=router

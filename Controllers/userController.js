@@ -26,7 +26,30 @@ exports.register = async (req, res) => {
     return res.status(500).json("Server error: " + err.message);
   }
 };
+exports.updateUser = async (req, res) => {
+  const { username, email, passsword } = req.body;
 
+  const { id } = req.params;
+  console.log(id);
+  try {
+    //find particular project id in mongo db and add the updated details
+    const updateuser = await users.findByIdAndUpdate(
+      { _id: id },
+      {
+        username,
+        email,
+        passsword,t
+      },
+      { new: true }
+    );
+    //save the updated details
+    await updateuser.save();
+    //send responseback to client
+    res.status(200).json(updateuser);
+  } catch (err) {
+    res.status(401).json(err);
+  }
+};
 // Login logic
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -83,17 +106,17 @@ exports.getUsersById = async (req, res) => {
     const user = await users.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json(user); // Send the user data to the client
   } catch (err) {
-    console.error('Error fetching user by ID:', err);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error("Error fetching user by ID:", err);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-exports.addWishlist= async (req, res) => {
+exports.addWishlist = async (req, res) => {
   const { userId, gameId } = req.body;
   console.log(userId);
   try {
@@ -152,37 +175,41 @@ exports.deletePurchasedGame = async (req, res) => {
 
     return res.status(200).json("Purchased game successfully deleted");
   } catch (error) {
-    return res.status(500).json("Error deleting purchased game: " + error.message);
+    return res
+      .status(500)
+      .json("Error deleting purchased game: " + error.message);
   }
 };
 exports.deleteFromWishlist = async (req, res) => {
   const { userId, gameId } = req.body;
   try {
-      console.log("Received gameId:", gameId); // Log the received gameId
+    console.log("Received gameId:", gameId); // Log the received gameId
 
-      // Check if gameId is a valid ObjectId
-      if (!ObjectId.isValid(gameId)) {
-          return res.status(400).json("Invalid gameId");
-      }
+    // Check if gameId is a valid ObjectId
+    if (!ObjectId.isValid(gameId)) {
+      return res.status(400).json("Invalid gameId");
+    }
 
-      // Find the user by ID
-      const user = await users.findById(userId);
-      if (!user) {
-          return res.status(404).json("User not found");
-      }
+    // Find the user by ID
+    const user = await users.findById(userId);
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
 
-      // Check if the game exists in the user's wishlist
-      const gameIndex = user.wishlist.indexOf(gameId);
-      if (gameIndex === -1) {
-          return res.status(404).json("Game not found in wishlist");
-      }
+    // Check if the game exists in the user's wishlist
+    const gameIndex = user.wishlist.indexOf(gameId);
+    if (gameIndex === -1) {
+      return res.status(404).json("Game not found in wishlist");
+    }
 
-      // Remove the game from the wishlist array
-      user.wishlist.splice(gameIndex, 1);
-      await user.save();
+    // Remove the game from the wishlist array
+    user.wishlist.splice(gameIndex, 1);
+    await user.save();
 
-      return res.status(200).json("Game successfully removed from wishlist");
+    return res.status(200).json("Game successfully removed from wishlist");
   } catch (error) {
-      return res.status(500).json("Error removing game from wishlist: " + error.message);
+    return res
+      .status(500)
+      .json("Error removing game from wishlist: " + error.message);
   }
 };

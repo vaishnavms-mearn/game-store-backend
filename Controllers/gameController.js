@@ -43,12 +43,19 @@ exports.addGames = async (req, res) => {
 };
 //get user project
 exports.getAllGames= async (req, res) => {
+  const searchKey=req.query.search
+  const query={
+    title:{
+      $regex: searchKey,
+      $options: "i",
+    }
+  }
   try {
     //get project informationof particular user
-    const allGames = await games.find();
+    const allGames = await games.find(query);
     res.status(200).json(allGames); //send response to client
   } catch (err) {
-    res.status(401).json(err.err.message);
+    res.status(401).json(err);
   }
 };
 exports.getGamesById = async (req, res) => {

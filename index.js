@@ -36,8 +36,8 @@ pfServer.post("/checkout", async (req, res) => {
         }),
         customer_email: req.body.email, // Include customer email
         billing_address_collection: 'required', // Require billing address
-        success_url: "http://localhost:3000/library",
-        cancel_url: "http://localhost:4000/cancel",
+        success_url: "https://deluxe-fenglisu-043a11.netlify.app/library",
+        cancel_url: "https://deluxe-fenglisu-043a11.netlify.app/cancel",
       });
       res.json({ url: session.url });
     } catch (error) {
